@@ -1,3 +1,16 @@
+/* Interactions fluides */
+html {
+  scroll-behavior: smooth;
+}
+
+.list-group-item {
+  transition: background-color 0.3s ease;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
 /* Impression élégante */
 @media print {
   body {
