@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Création de Menus</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container py-4">
+    <!-- Menu Setup -->
+    <div id="menuSetup" class="text-center no-print">
+      <h1 class="mb-4">Créer un menu</h1>
+      <div class="row justify-content-center">
+        <div class="col-10 col-sm-8 col-md-6">
+          <input type="text" id="menuName" class="form-control form-control-lg mb-3" placeholder="Entrez le nom du menu">
+          <button id="startBtn" class="btn btn-primary btn-lg w-100">Ajouter le menu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interface principale -->
+    <div id="mainContent" class="d-none no-print">
+      <!-- Liste des menus -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Menus existants :</h3>
+        <button id="addMenuBtn" class="btn btn-outline-info btn-sm">Ajouter un menu</button>
+      </div>
+      <div id="menuTable" class="table-responsive mb-4">
+        <table class="table table-bordered">
+          <thead><tr><th>Nom du menu</th></tr></thead>
+          <tbody id="menuTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Formulaire dynamique -->
+      <div id="contentArea" class="mb-4"></div>
+
+      <!-- Affichage en direct -->
+      <div class="text-center mb-4">
+        <h1 id="menuTitle"></h1>
+      </div>
+      <div id="menuDisplay" class="row mb-4">
+        <div class="col-12 col-md-4 mb-3">
+          <div class="card">
+            <div class="card-header">Entrées</div>
+            <ul id="listEntrées" class="list-group list-group-flush"></ul>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 mb-3">
+          <div class="card">
+            <div class="card-header">Plats</div>
+            <ul id="listPlats" class="list-group list-group-flush"></ul>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 mb-3">
+          <div class="card">
+            <div class="card-header">Desserts</div>
+            <ul id="listDesserts" class="list-group list-group-flush"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Boutons d'ajout -->
+      <div class="text-center mb-4">
+        <div class="btn-group" role="group">
+          <button data-type="Entrée" id="addEntreeBtn" class="btn btn-outline-primary btn-sm">Ajouter Entrée</button>
+          <button data-type="Plat" id="addPlatBtn" class="btn btn-outline-success btn-sm">Ajouter Plat</button>
+          <button data-type="Dessert" id="addDessertBtn" class="btn btn-outline-warning btn-sm">Ajouter Dessert</button>
+        </div>
+      </div>
+
+      <!-- Impression -->
+      <div class="text-center mt-4">
+        <button id="printMenuBtn" class="btn btn-success btn-lg">Imprimer tous les menus</button>
+      </div>
+    </div>
+
+    <!-- Zone imprimable -->
+    <div id="printArea" class="print-area"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
