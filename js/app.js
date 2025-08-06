@@ -171,9 +171,32 @@ startBtn.addEventListener('click', () => {
 });
 
 addMenuBtn.addEventListener('click', () => {
-  const name = prompt('Nom du nouveau menu:');
-  if (name) addMenu(name.trim());
+  contentArea.innerHTML = '';
+  const form = document.createElement('div');
+  form.className = 'card card-body mb-4';
+  form.innerHTML = `
+    <h5 class="card-title">Nouveau menu</h5>
+    <div class="mb-3">
+      <label class="form-label" for="newMenuName">Nom du menu</label>
+      <input type="text" class="form-control" id="newMenuName" placeholder="Ex. : Menu du jour">
+    </div>
+    <div class="text-end">
+      <button class="btn btn-primary" id="confirmAddMenu">Ajouter</button>
+    </div>
+  `;
+  contentArea.appendChild(form);
+
+  form.querySelector('#confirmAddMenu').addEventListener('click', () => {
+    const name = form.querySelector('#newMenuName').value.trim();
+    if (!name) {
+      alert("Veuillez entrer un nom de menu.");
+      return;
+    }
+    addMenu(name);
+    contentArea.innerHTML = '';
+  });
 });
+
 
 document.getElementById('addEntreeBtn').addEventListener('click', () => openForm('entree'));
 document.getElementById('addPlatBtn').addEventListener('click', () => openForm('plat'));
