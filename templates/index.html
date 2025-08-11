@@ -1,87 +1,151 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Création de Menus</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  <meta charset="UTF-8"/>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0d6efd">
+
+  <!-- Icônes iOS -->
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon-180x180.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/static/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/static/apple-touch-icon-120x120.png">
+
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="/static/manifest.webmanifest">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Menus & Allergènes</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"/>
 </head>
-<body>
+<body class="bg-light">
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW fail', err));
+    }
+  </script>
+
+
   <div class="container py-4">
-    <!-- Menu Setup -->
-    <div id="menuSetup" class="text-center no-print">
-      <h1 class="mb-4">Créer un menu</h1>
+
+    <!-- Création d'un menu -->
+    <section id="menuSetup" class="text-center">
+      <h1 class="mb-3">Créer un menu</h1>
       <div class="row justify-content-center">
-        <div class="col-10 col-sm-8 col-md-6">
-          <input type="text" id="menuName" class="form-control form-control-lg mb-3" placeholder="Entrez le nom du menu">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+          <input type="text" id="menuName" class="form-control form-control-lg mb-3" placeholder="Nom du menu">
           <button id="startBtn" class="btn btn-primary btn-lg w-100">Ajouter le menu</button>
+          <p class="text-muted mt-2 small">Ajoutez ensuite Entrées / Plats / Desserts et cochez les allergènes.</p>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- Interface principale -->
-    <div id="mainContent" class="d-none no-print">
-      <!-- Liste des menus -->
+    <section id="mainContent" class="d-none">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3>Menus existants :</h3>
-        <button id="addMenuBtn" class="btn btn-outline-info btn-sm">Ajouter un menu</button>
+        <h3 class="mb-0">Menus</h3>
+        <div class="d-flex gap-2">
+          <button id="addMenuBtn" class="btn btn-outline-primary btn-sm">Nouveau menu</button>
+          <button id="pdfBtn" class="btn btn-success btn-sm">Télécharger le PDF</button>
+        </div>
       </div>
-      <div id="menuTable" class="table-responsive mb-4">
-        <table class="table table-bordered">
-          <thead><tr><th>Nom du menu</th></tr></thead>
+
+      <div id="menuTable" class="table-responsive mb-3">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Nom</th>
+              <th class="text-center">Entrées</th>
+              <th class="text-center">Plats</th>
+              <th class="text-center">Desserts</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
           <tbody id="menuTableBody"></tbody>
         </table>
       </div>
 
-      <!-- Formulaire dynamique -->
-      <div id="contentArea" class="mb-4"></div>
-
-      <!-- Affichage en direct -->
-      <div class="text-center mb-4">
-        <h1 id="menuTitle"></h1>
+      <!-- Outils simples -->
+      <div id="menuTools" class="d-none mb-3">
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+          <input id="renameInput" class="form-control form-control-sm w-auto" placeholder="Renommer le menu">
+          <button id="renameBtn" class="btn btn-outline-secondary btn-sm">Renommer</button>
+          <button id="deleteMenuBtn" class="btn btn-outline-danger btn-sm">Supprimer</button>
+        </div>
       </div>
-      <div id="menuDisplay" class="row mb-4">
-        <div class="col-12 col-md-4 mb-3">
-          <div class="card">
+
+      <!-- Titre -->
+      <div class="text-center mb-3">
+        <h1 id="menuTitle" class="fw-bold"></h1>
+      </div>
+
+      <!-- Listes -->
+      <div class="row g-3 mb-3">
+        <div class="col-12 col-md-4">
+          <div class="card h-100">
             <div class="card-header">Entrées</div>
             <ul id="listEntrees" class="list-group list-group-flush"></ul>
           </div>
         </div>
-        <div class="col-12 col-md-4 mb-3">
-          <div class="card">
+        <div class="col-12 col-md-4">
+          <div class="card h-100">
             <div class="card-header">Plats</div>
             <ul id="listPlats" class="list-group list-group-flush"></ul>
           </div>
         </div>
-        <div class="col-12 col-md-4 mb-3">
-          <div class="card">
+        <div class="col-12 col-md-4">
+          <div class="card h-100">
             <div class="card-header">Desserts</div>
             <ul id="listDesserts" class="list-group list-group-flush"></ul>
           </div>
         </div>
       </div>
 
-      <!-- Boutons d'ajout -->
-      <div class="text-center mb-4">
-        <div class="btn-group" role="group">
-          <button id="addEntreeBtn" class="btn btn-outline-primary btn-sm">Ajouter Entrée</button>
-          <button id="addPlatBtn" class="btn btn-outline-success btn-sm">Ajouter Plat</button>
-          <button id="addDessertBtn" class="btn btn-outline-warning btn-sm">Ajouter Dessert</button>
+      <!-- Formulaire (sans prix) -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <form id="itemForm" class="row g-3">
+            <div class="col-12 col-md-4">
+              <label class="form-label">Catégorie</label>
+              <select id="itemCategory" class="form-select" required>
+                <option value="entrees">Entrée</option>
+                <option value="plats" selected>Plat</option>
+                <option value="desserts">Dessert</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-8">
+              <label class="form-label">Intitulé</label>
+              <input id="itemName" class="form-control" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Notes (optionnel)</label>
+              <input id="itemNote" class="form-control">
+            </div>
+
+            <div class="col-12">
+              <label class="form-label">Allergènes</label>
+              <div id="allergenList" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2"></div>
+            </div>
+
+            <div class="col-12 d-flex gap-2">
+              <button class="btn btn-primary" id="addItemBtn" type="submit">Ajouter</button>
+              <button class="btn btn-outline-secondary" id="clearFormBtn" type="button">Effacer</button>
+            </div>
+          </form>
         </div>
       </div>
-
-      <!-- Impression -->
-      <div class="text-center mt-4">
-        <button id="printMenuBtn" class="btn btn-success btn-lg">Imprimer tous les menus</button>
-      </div>
-    </div>
-
-    <!-- Zone imprimable -->
-    <div id="printArea" class="print-area"></div>
+    </section>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>
