@@ -1,7 +1,6 @@
-# Image légère Python
 FROM python:3.11-slim
 
-# Dépendances système nécessaires à WeasyPrint (cairo, pango, gdk-pixbuf) + polices
+ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -qq && apt-get install -y --no-install-recommends \
     libcairo2 \
     libpango-1.0-0 \
@@ -12,21 +11,15 @@ RUN apt-get update -qq && apt-get install -y --no-install-recommends \
     libfontconfig1 \
     libglib2.0-0 \
     fonts-dejavu-core \
-  > /dev/null \
+  > /dev/null 2>&1 \
   && rm -rf /var/lib/apt/lists/*
 
-
 WORKDIR /app
-COPY requirements.txt .
+
+COPY app/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+COPY app .
 
-
-# Copie du code
-COPY . .
-
-# Port exposé dans le conteneur
 EXPOSE 4000
-
-# Lancement en prod avec gunicorn, binding sur 0.0.0.0:4000
 CMD ["gunicorn", "-w", "2", "-b", "0.0.0.0:4000", "app:app"]
