@@ -1,0 +1,14 @@
+html { scroll-behavior: smooth; }
+.list-group-item { transition: background-color 0.25s ease; }
+.list-group-item:hover { background-color: #f8f9fa; }
+
+/* Limite de hauteur de la table des menus (quand il y en a beaucoup) */
+#menuTable { max-height: 240px; overflow-y: auto; }
+
+/* Évite une marge blanche en haut sur iOS en mode plein écran */
+body {
+  margin: 0;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+  background-color: #f8f9fa;
+}

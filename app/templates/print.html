@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Menu</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 25mm;
+    }
+    body {
+      font-family: 'Times New Roman', serif;
+      color: #000;
+      background: #fff;
+      text-align: center;
+    }
+    .logo {
+      width: 180px;
+      height: auto;
+      margin-bottom: 15px;
+    }
+    .logo-wrapper {
+        display: block;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    .menu-title {
+    display: block;
+    margin: 0 auto 20px auto;
+    font-size: 28px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 6px 18px;
+    }
+    .section {
+      margin: 25px 0;
+    }
+    .section h2 {
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      border-bottom: 0.5px solid #000;
+      display: inline-block;
+      padding-bottom: 4px;
+    }
+    .item {
+      margin: 10px 0;
+    }
+    .item-name {
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .item-note {
+      font-style: italic;
+      font-size: 12px;
+      color: #444;
+    }
+    .item-allergens {
+      font-size: 11px;
+      color: #666;
+    }
+    .legend {
+      margin-top: 30px;
+      font-size: 10px;
+      color: #555;
+      border-top: 0.5px solid #000;
+      padding-top: 10px;
+    }
+    .menu-page {
+        page-break-before: always;
+    }
+    .menu-page:first-of-type {
+        page-break-before: auto;
+    }
+  </style>
+</head>
+<body>
+  {% for menu in menus %}
+    <div class="menu-page">
+        <div class="logo-wrapper">
+            <img src="{{ url_for('static', filename='logo-lhoirie.png') }}" alt="Logo" class="logo">
+        </div>
+      <div class="menu-title">{{ menu.name }}</div>
+
+      {% if menu.entrees %}
+        <div class="section">
+          <h2>Entrées</h2>
+          {% for i in menu.entrees %}
+            <div class="item">
+              <div class="item-name">{{ i.name }}</div>
+              {% if i.note %}
+                <div class="item-note">{{ i.note }}</div>
+              {% endif %}
+              {% if i.allergens %}
+                <div class="item-allergens">{{ i.allergens|join(', ') }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if menu.plats %}
+        <div class="section">
+          <h2>Plats</h2>
+          {% for i in menu.plats %}
+            <div class="item">
+              <div class="item-name">{{ i.name }}</div>
+              {% if i.note %}
+                <div class="item-note">{{ i.note }}</div>
+              {% endif %}
+              {% if i.allergens %}
+                <div class="item-allergens">{{ i.allergens|join(', ') }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if menu.desserts %}
+        <div class="section">
+          <h2>Desserts</h2>
+          {% for i in menu.desserts %}
+            <div class="item">
+              <div class="item-name">{{ i.name }}</div>
+              {% if i.note %}
+                <div class="item-note">{{ i.note }}</div>
+              {% endif %}
+              {% if i.allergens %}
+                <div class="item-allergens">{{ i.allergens|join(', ') }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="legend">
+        Allergènes (UE) : Céréales contenant du gluten · Crustacés · Œufs · Poissons · Arachides · Soja · Lait · Fruits à coque · Céleri · Moutarde · Graines de sésame · Sulfites · Lupin · Mollusques.
+      </div>
+    </div>
+  {% endfor %}
+</body>
+</html>
