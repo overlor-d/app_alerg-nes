@@ -4,4 +4,4 @@ Cette application répond au besoin des restaurateurs ayant la necessité d'affi
 
 ---
 
-L'application est testé et en production elle est utilisé dans la restauration.
+L'application est testé et en production elle est utilisée dans la restauration.
